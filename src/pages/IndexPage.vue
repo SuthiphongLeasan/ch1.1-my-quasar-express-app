@@ -4,7 +4,6 @@
       Version Control + Docker Demo (Quasar)
     </div>
 
-
     <q-card class="q-mb-md">
       <q-card-section>
         <div class="text-h6">Git Workflow (ตัวอย่างขั้นตอนทำงาน)</div>
@@ -22,8 +21,7 @@
       </q-card-section>
     </q-card>
 
-
-    <q-card>
+    <q-card class="q-mb-md">
       <q-card-section>
         <div class="text-h6">Docker Concepts (สรุปสั้น ๆ)</div>
         <q-list bordered separator class="q-mt-sm">
@@ -36,9 +34,24 @@
         </q-list>
       </q-card-section>
     </q-card>
+
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">Docker Quick Reference</div>
+        <q-list bordered separator class="q-mt-sm">
+          <q-item v-for="(cmd, index) in dockerCommands" :key="index">
+            <q-item-section>
+              <q-item-label class="text-weight-bold text-primary">
+                <code>{{ cmd.command }}</code>
+              </q-item-label>
+              <q-item-label caption>{{ cmd.detail }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
+    </q-card>
   </q-page>
 </template>
-
 
 <script setup>
 const gitSteps = [
@@ -64,7 +77,6 @@ const gitSteps = [
   },
 ]
 
-
 const dockerItems = [
   {
     title: 'Image',
@@ -81,6 +93,29 @@ const dockerItems = [
   {
     title: 'Network',
     detail: 'ให้บริการใน Docker ติดต่อกันได้ เช่น Nginx ส่งต่อคำขอไปยัง Express',
+  },
+]
+
+const dockerCommands = [
+  {
+    command: 'docker build -t my-quasar-frontend:latest -f frontend/Dockerfile ./frontend',
+    detail: 'ใช้เมื่อต้องการสร้าง (Build) Docker Image ใหม่หลังจากแก้ไขโค้ดหรือ Dockerfile',
+  },
+  {
+    command: 'docker run -d -p 8080:80 --name quasar-app my-quasar-frontend:latest',
+    detail: 'ใช้เมื่อต้องการเปิดใช้งาน Container จาก Image ที่สร้างไว้ในโหมดเบื้องหลัง (-d)',
+  },
+  {
+    command: 'docker ps -a',
+    detail: 'ใช้เมื่อต้องการตรวจสอบสถานะของ Container ทั้งหมดในเครื่อง (ทั้งที่กำลังรันและหยุดไปแล้ว)',
+  },
+  {
+    command: 'docker stop quasar-app && docker rm quasar-app',
+    detail: 'ใช้เมื่อต้องการหยุดการทำงานและลบ Container เดิมทิ้ง ก่อนที่จะรันเวอร์ชันใหม่ทับ',
+  },
+  {
+    command: 'docker compose up -d --build',
+    detail: 'ใช้เมื่อต้องการ Build และรันทุก Service (Frontend + Backend) พร้อมกันตามไฟล์ docker-compose.yml',
   },
 ]
 </script>
